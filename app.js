@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
+const MongoStore = require('connect-mongo');
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
@@ -16,12 +17,14 @@ const User = require("./model/user.js");
 const blogsRouter = require("./routes/blog.js");
 const userRouter = require("./routes/user.js");
 
+const DB_Url = process.env.MongoDB_URL;
+
 main()
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/devlog");
+  await mongoose.connect(DB_Url);
 }
 
 const app = express();
@@ -34,8 +37,21 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
+const store = MongoStore.create({
+  mongoUrl: DB_Url,
+  crypto: {
+    secret: process.env.SECRET,
+  },
+  touchAfter: 24 * 3600,
+});
+
+store.on("error", () => {
+  console.log("error in MONGO SESSION STORE", err);
+});
+
 const sessionConfig = {
-  secret: "thisshouldbeabettersecret!",
+  store,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -49,6 +65,8 @@ const sessionConfig = {
 app.get("/", (req, res) => {
   res.send("Welcome to the devLog!");
 });
+
+
 
 app.use(session(sessionConfig));
 app.use(flash());
