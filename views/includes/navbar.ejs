@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg bg-body-light border-bottom">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/blogs">DevLog</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="navbar-nav ms-auto">
+        <div class="dropdown-center">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <% if (currentUser) { %>
+            <i class="fa-regular fa-circle-user"></i> <%= currentUser.username
+            %> <% } %> <% if (!currentUser) { %>
+            <i class="fa-regular fa-circle-user"></i>
+            <% } %>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-lg-end">
+            <% if (!currentUser) { %>
+            <li><a class="dropdown-item" href="/signup">Signup</a></li>
+            <% } %>
+            <li><a class="dropdown-item" href="/blogs/new">New BLog</a></li>
+            <% if (currentUser) { %>
+            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

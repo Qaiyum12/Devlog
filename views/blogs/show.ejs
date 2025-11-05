@@ -1,0 +1,37 @@
+<% layout("layouts/boilerplate.ejs") %>
+
+<style>
+  body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+</style>
+
+<div class="row">
+  <div class="col-6 offset-2 border p-4 mt-3 mb-3 blog-container">
+    <h2><%= blog.title %></h2>
+
+    <img src="<%= blog.image.url %>" class="blog-img card-img-top" alt="..." />
+
+    <p><%= blog.content %></p>
+
+    <% if (currentUser && currentUser._id.equals(blog.owner._id)) { %>
+     
+      <div class="d-flex gap-5 mb-5 mt-4">
+        <form method="get" action="/blogs/<%= blog._id %>/edit">
+          <button class="btn btn-primary">Edit</button>
+        </form>
+        
+        <form method="post" action="/blogs/<%= blog._id %>?_method=DELETE">
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    <% } %>
+
+    <h6 id="Date" class="text-muted mt-5">
+      CreatedAt: <%= new Date(blog.createdAt
+      ).toLocaleDateString('en-US', {
+      month: 'short', day: 'numeric', year: 'numeric' }).replace(',', '') %>
+    </h6>
+  </div>
+</div>

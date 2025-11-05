@@ -1,0 +1,41 @@
+<% layout("layouts/boilerplate.ejs") %>
+
+<!-- 
+<form method="get" action="/blogs/new" >
+  <button class="btn btn-success ms-3"><i class="fa-solid fa-plus"></i></button>
+</form> -->
+
+<div class="hero mb-5">
+  <h1>The DevLog Blogs</h1>
+  <p>Share your great thoughts and ideas with the world</p>
+</div>
+
+<div class="filter-bar d-flex justify-content-center align-item-center gap-3 mb-5">
+  <a href="/blogs" class="btn btn-outline-success" role="button">All</a>
+  <a href="/blogs/category/Tech" class="btn btn-outline-success" role="button">Tech</a>
+  <a href="/blogs/category/Design" class="btn btn-outline-success" role="button">Design</a>
+  <a href="/blogs/category/Mobile" class="btn btn-outline-success" role="button">Mobile</a>
+</div>
+
+<div class="row m-3 d-flex justify-content-center align-item-center">
+  <% for( let blog of blogs ) { %>
+  <div class="card col-md-5 col-lg-3 col-sm-12 mx-3 my-3">
+    <img src="<%= blog.image.url %>" class="blog-img card-img-top" alt="..." />
+    <div class="card-body">
+      <h6 class="card-title mt-3"><%= blog.category %></h6>
+      <h5 class="card-title"><%= blog.title %></h5>
+      <h6 class="card-title">
+        <%= new Date(blog.createdAt).toLocaleDateString('en-US', { month:
+        'short', day: 'numeric', year: 'numeric' }).replace(',', '') %>
+      </h6>
+      <p class="card-text blog-content"><%= blog.content %></p>
+
+      <form action="http://localhost:8080/blogs/<%= blog._id %>" method="get">
+        <button class="btn btn-success mb-3">Read...</button>
+      </form>
+
+      <p><i class="fa-regular fa-circle-user"></i> <%= blog.owner ? blog.owner.username : "unknown" %></p>
+    </div>
+  </div>
+  <% } %>
+</div>
