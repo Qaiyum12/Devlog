@@ -1,8 +1,6 @@
 <% layout("layouts/boilerplate.ejs") %>
 
-
-
-<div class="row mt-3" style="width: 100%;">
+<div class="row mt-3" style="width: 100%">
   <div class="col-6 offset-3 border rounded p-4 shadow mt-4 mb-5">
     <h3 class="text-center mt-2 mb-5 border-bottom">Create New Blog</h3>
     <form
@@ -18,7 +16,12 @@
       </div>
 
       <div class="mb-3 mt-4">
-        <select class="form-select" aria-label="Default select example" name="blog[category]" required>
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          name="blog[category]"
+          required
+        >
           <option selected disabled>Select Category</option>
           <option value="Tech">Tech</option>
           <option value="Design">Design</option>
@@ -49,10 +52,19 @@
           required
         ></textarea>
         <div class="invalid-feedback">Content cannot be empty!</div>
-        <label for="content">content</label>
+        <label for="content"></label>
       </div>
 
       <button type="submit" class="btn btn-primary mt-4">Create Blog</button>
     </form>
+
+    <script>
+      tinymce.init({
+        selector: "#content",
+        plugins: "lists link image code",
+        toolbar: "bold italic underline | bullist numlist | link image | code",
+        height: 300,
+      });
+    </script>
   </div>
 </div>

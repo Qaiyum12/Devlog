@@ -18,12 +18,12 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
   </head>
   <body class="d-flex flex-column min-vh-100">
     <%- include("../includes/navbar.ejs") %>
     <div class="flex-grow-1">
-        <%- include("../includes/flash.ejs") %>
-        <%- body %>
+      <%- include("../includes/flash.ejs") %> <%- body %>
     </div>
     <%- include("../includes/footer.ejs") %>
 

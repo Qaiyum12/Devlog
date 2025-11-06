@@ -1,7 +1,20 @@
 const Blog = require("../model/blogs.js");
 
+const DOMPurify = require("dompurify");
+const { JSDOM } = require("jsdom");
+const window = new JSDOM("").window;
+const purify = DOMPurify(window);
+
 module.exports.index = async (req, res) => {
   const blogs = await Blog.find({}).populate("owner");
+
+  // Strip HTML tags and truncate content for preview
+  for (let blog of blogs) {
+    blog.content =
+      purify.sanitize(blog.content, { ALLOWED_TAGS: [] }).substring(0, 100) +
+      "...";
+  }
+
   res.render("./blogs/index.ejs", { blogs });
 };
 
@@ -11,6 +24,14 @@ module.exports.blogFillter = async (req, res) => {
     const blogs = await Blog.find({
       category: { $regex: new RegExp(category, "i") },
     }).populate("owner");
+
+    // Strip HTML tags and truncate content for preview
+    for (let blog of blogs) {
+      blog.content =
+        purify.sanitize(blog.content, { ALLOWED_TAGS: [] }).substring(0, 100) +
+        "...";
+    }
+
     res.render("blogs/index", { blogs }); // reuse same template
   } catch (err) {
     console.error(err);
@@ -26,6 +47,8 @@ module.exports.createBlog = async (req, res, next) => {
   let url = req.file.path;
   let filename = req.file.filename;
   // console.log(url, "..", filename);
+
+  req.body.blog.content = purify.sanitize(req.body.blog.content);
 
   const blog = new Blog(req.body.blog);
   blog.owner = req.user._id;
@@ -60,9 +83,18 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateBlog = async (req, res) => {
   let { id } = req.params;
+
+  req.body.blog.content = purify.sanitize(req.body.blog.content);
+
+  // Handle image update: if image is provided, update it; otherwise, keep existing
+  const updateData = { ...req.body.blog };
+  if (req.body.blog.image) {
+    updateData.image = { url: req.body.blog.image };
+  }
+
   await Blog.findByIdAndUpdate(
     id,
-    { ...req.body.blog },
+    updateData,
     { new: true, runValidators: true }
   );
   console.log("updated successfully");

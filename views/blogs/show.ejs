@@ -13,7 +13,7 @@
 
     <img src="<%= blog.image.url %>" class="blog-img card-img-top" alt="..." />
 
-    <p><%= blog.content %></p>
+    <div><%- blog.content %></div>
 
     <% if (currentUser && currentUser._id.equals(blog.owner._id)) { %>
      
