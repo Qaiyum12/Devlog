@@ -10,7 +10,7 @@ module.exports.blogFillter = async (req, res) => {
   try {
     const blogs = await Blog.find({
       category: { $regex: new RegExp(category, "i") },
-    });
+    }).populate("owner");
     res.render("blogs/index", { blogs }); // reuse same template
   } catch (err) {
     console.error(err);
