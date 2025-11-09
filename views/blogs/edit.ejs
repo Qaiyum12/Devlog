@@ -1,7 +1,7 @@
 <% layout("layouts/boilerplate.ejs") %>
 
 <div class="row mt-3" style="width: 100%">
-  <div class="col-6 offset-3 border p-4 rounded shadow mb-5 mt-4">
+  <div class="col-12 col-md-6 offset-md-3 border p-4 rounded shadow mb-5 mt-4">
     <h3 class="text-center border-bottom mt-2 mb-5">Edit Blog</h3>
     <form method="post" action="/blogs/<%= blog._id %>?_method=PUT">
       <div class="mb-3">
@@ -43,8 +43,7 @@
           style="height: 200px"
           name="blog[content]"
         >
-<%= blog.content %></textarea
-        >
+        <%= blog.content %></textarea>
       </div>
       <button type="submit" class="btn btn-success mt-4">Save</button>
     </form>
